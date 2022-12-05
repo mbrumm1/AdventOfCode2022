@@ -1,6 +1,4 @@
-﻿using System.Security.Cryptography.X509Certificates;
-
-namespace AdventOfCode2022;
+﻿namespace AdventOfCode2022;
 public static class Day04
 {
     public static int One(string path) => GetSectionIds(path)
