@@ -7,4 +7,5 @@
 //Day03.One("Input\\day03.txt").WriteLine();
 //Day03.Two("Input\\day03.txt").WriteLine();
 //Day04.One("Input\\day04.txt").WriteLine();
-Day04.Two("Input\\day04.txt").WriteLine();
+//Day04.Two("Input\\day04.txt").WriteLine();
+Day05.One("Input\\day05.txt").WriteLine();
