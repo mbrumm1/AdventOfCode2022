@@ -1,6 +1,4 @@
-﻿using System.Security.Principal;
-
-namespace AdventOfCode2022;
+﻿namespace AdventOfCode2022;
 public static class Day05
 {
     private static string[] GetLines(string path) => File.ReadAllLines(path);
