@@ -68,13 +68,7 @@ public static class Day05
         return GetMessage(stacks);
     }
 
-    private static List<char>[] CreateStacksAsLists(int count)
-    {
-        List<char>[] lists = new List<char>[count];
-        for (int i = 0; i < lists.Length; i++)
-            lists[i] = new List<char>();
-        return lists;
-    }
+    private static List<char>[] CreateStacksAsLists(int count) => Enumerable.Range(0, count).Select(x => new List<char>()).ToArray();
 
     private static List<char>[] InitializeCrates(string[] lines, List<char>[] stacks, int separatorIndex)
     {
