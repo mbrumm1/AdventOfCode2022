@@ -3,22 +3,11 @@ public static class Day05
 {
     private static string[] GetLines(string path) => File.ReadAllLines(path);
 
-    private static int GetSeparatorIndex(string[] lines)
-    {
-        int i = 0;
-        while (!string.IsNullOrWhiteSpace(lines[i])) i++;
-        return i;
-    }
+    private static int GetSeparatorIndex(string[] lines) => lines.TakeWhile(l => !string.IsNullOrWhiteSpace(l)).Count();
 
     private static int GetStackCount(string[] lines, int separatorIndex) => lines[separatorIndex - 1][^2] - '0';
 
-    private static Stack<char>[] CreateStacks(int count)
-    {
-        Stack<char>[] stacks = new Stack<char>[count];
-        for (int i = 0; i < stacks.Length; i++)
-            stacks[i] = new Stack<char>();
-        return stacks;
-    }
+    private static Stack<char>[] CreateStacks(int count) => Enumerable.Range(0, count).Select(x => new Stack<char>()).ToArray();
 
     private static Stack<char>[] InitializeCrates(string[] lines, Stack<char>[] stacks, int separatorIndex)
     {
@@ -65,16 +54,7 @@ public static class Day05
         return stacks;
     }
 
-    private static string GetMessage(Stack<char>[] stacks, int stackCount) 
-    {
-        List<char> crates = new();
-        for (int i = 0; i < stacks.Length; i++)
-        {
-            if (stacks[i].Any())
-                crates.Add(stacks[i].Peek());
-        }
-        return string.Concat(crates);
-    }
+    private static string GetMessage(Stack<char>[] stacks) => stacks.Aggregate("", (current, next) => current + next.Peek());
 
     public static string One(string path)
     {
@@ -85,7 +65,7 @@ public static class Day05
         stacks = InitializeCrates(lines, stacks, separatorIndex);
         string[] steps = lines[(separatorIndex + 1)..];
         stacks = RunProcedure(stacks, steps);
-        return GetMessage(stacks, stackCount);
+        return GetMessage(stacks);
     }
 
     private static List<char>[] CreateStacksAsLists(int count)
@@ -137,7 +117,7 @@ public static class Day05
         return stacks;
     }
 
-    private static string GetMessage(List<char>[] stacks, int stackCount)
+    private static string GetMessage(List<char>[] stacks)
     {
         List<char> crates = new();
         for (int i = 0; i < stacks.Length; i++)
@@ -157,6 +137,6 @@ public static class Day05
         lists = InitializeCrates(lines, lists, separatorIndex);
         string[] steps = lines[(separatorIndex + 1)..];
         lists = RunProcedure(lists, steps);
-        return GetMessage(lists, stackCount);
+        return GetMessage(lists);
     }
 }
