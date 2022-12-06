@@ -17,8 +17,8 @@ public static class Day05
     private static Stack<char>[] CreateStacks(int count)
     {
         Stack<char>[] stacks = new Stack<char>[count];
-        for (int j = 0; j < stacks.Length; j++)
-            stacks[j] = new Stack<char>();
+        for (int i = 0; i < stacks.Length; i++)
+            stacks[i] = new Stack<char>();
         return stacks;
     }
 
@@ -88,5 +88,77 @@ public static class Day05
         string[] steps = lines[(separatorIndex + 1)..];
         stacks = RunProcedure(stacks, steps);
         return GetMessage(stacks, stackCount);
+    }
+
+    private static List<char>[] CreateStacksAsLists(int count)
+    {
+        List<char>[] lists = new List<char>[count];
+        for (int i = 0; i < lists.Length; i++)
+            lists[i] = new List<char>();
+        return lists;
+    }
+
+    private static List<char>[] InitializeCrates(string[] lines, List<char>[] stacks, int separatorIndex)
+    {
+        for (int i = 0; i < separatorIndex - 1; i++)
+            InitializeCrateLayer(stacks, lines[i]);
+        return stacks;
+    }
+
+    private static List<char>[] InitializeCrateLayer(List<char>[] stacks, string crateLayer)
+    {
+        int stackIndex = 0;
+        for (int i = 1; i < crateLayer.Length - 1; i += 4)
+        {
+            char crate = crateLayer[i];
+            if (!char.IsWhiteSpace(crate))
+                stacks[stackIndex].Add(crateLayer[i]);
+            stackIndex++;
+        }
+        return stacks;
+    }
+
+    private static List<char>[] RunProcedure(List<char>[] stacks, string[] steps)
+    {
+        for (int i = 0; i < steps.Length; i++)
+        {
+            int[] values = GetStepValues(steps[i]);
+            RunStep(stacks, values[0], values[1], values[2]);
+        }
+        return stacks;
+    }
+
+    private static List<char>[] RunStep(List<char>[] stacks, int quantity, int from, int to)
+    {
+        for (int i = quantity - 1; i >= 0; i--)
+        {
+            char removed = stacks[from - 1][i];
+            stacks[to - 1].Insert(0, removed);
+        }
+        stacks[from - 1].RemoveRange(0, quantity);
+        return stacks;
+    }
+
+    private static string GetMessage(List<char>[] stacks, int stackCount)
+    {
+        List<char> crates = new();
+        for (int i = 0; i < stacks.Length; i++)
+        {
+            if (stacks[i].Any())
+                crates.Add(stacks[i][0]);
+        }
+        return string.Concat(crates);
+    }
+
+    public static string Two(string path)
+    {
+        string[] lines = GetLines(path);
+        int separatorIndex = GetSeparatorIndex(lines);
+        int stackCount = GetStackCount(lines, separatorIndex);
+        List<char>[] lists = CreateStacksAsLists(stackCount);
+        lists = InitializeCrates(lines, lists, separatorIndex);
+        string[] steps = lines[(separatorIndex + 1)..];
+        lists = RunProcedure(lists, steps);
+        return GetMessage(lists, stackCount);
     }
 }
